@@ -1,0 +1,32 @@
+#! /usr/bin/env bash
+
+echo "--Sync Objects--"
+
+set -e
+
+# Guardrail 1: Demanding the target bucket name ($1)
+if [ -z "$1" ]; then
+    echo "Error: You must provide a bucket name"
+    exit 1
+fi
+
+# Guardrail 2: Fallback folder if custom directory ($2) isn't specified
+if [ -z "$2" ]; then
+    echo "There needs to be a filename prefix"
+    exit 1
+fi
+
+Bucket_name=$1
+Filename=$2
+Output_dir="/tmp/s3/bash-scripts"
+rm -r "$Output_dir"
+mkdir -p "$Output_dir"
+num_files=$((RANDOM % 6 + 5))
+
+for ((i=1; i<="$num_files"; i++)); do
+    filename="$Output_dir/${Filename}_$i.txt"
+    dd if=/dev/urandom of="$filename" bs=1024 count=$((RANDOM % 1024 + 1)) 2> /dev/null
+done
+
+# The Game Changer: Replacing the loop copy with a single sync command
+aws s3 sync $Output_dir s3://$Bucket_name/files

@@ -1,0 +1,30 @@
+#! /usr/bin/env bash
+
+echo "--Put Object--"
+
+if [ -z "$1" ]; then
+    echo "Error: You must provide a bucket name as the first argument!"
+    echo "Usage: ./put-object <bucket-name> [optional-output-dir]"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    Output_dir="/tmp/s3-bash-scripts"
+else
+    Output_dir="$2"
+fi
+
+mkdir -p "$Output_dir"
+
+num_files=$((RANDOM % 6 + 5))
+
+for i in $(seq 1 "$num_files"); do
+    file_path="$Output_dir/file_$i.txt"
+    dd if=/dev/urandom of="$file_path" bs=1024 count=$((RANDOM % 1024 + 1)) 2> /dev/null
+
+    aws s3 cp "$file_path" "s3://$1/file_$i.txt"
+done
+
+
+
+tree $Output_dir
