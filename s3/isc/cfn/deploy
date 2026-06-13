@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo "--Deploying CloudFormation Stack--"
+
+stack_name="s3-isc-cfn"
+aws cloudformation deploy \
+    --template-file template.yaml \
+    --region us-east-1 \
+    --stack-name $stack_name

@@ -1,0 +1,5 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Template S3 Bucket learning
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
