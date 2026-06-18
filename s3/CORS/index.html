@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+  </head>
+  <body>
+    <main>
+        <h1>Welcome to My Website</h1>
+        <p>This is a simple HTML page served from an S3 bucket with CORS enabled.</p>  
+    </main>
+    <script type="text/javascript">
+        // 1. Create a new XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+
+// 2. Configure it: POST request to the target URL
+    const url = "https://bpjucf5az2.execute-api.us-east-1.amazonaws.com/pashe";
+    xhr.open("POST", url, true);
+
+// 3. Set the request headers
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+// 4. Setup a listener to handle the response
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status >= 200 && xhr.status < 300) {
+            // Success! Parse and handle the response
+                const response = JSON.parse(xhr.responseText);
+                console.log("Success:", response);
+            } else {
+            // Something went wrong
+            console.error("Error:", xhr.status, xhr.statusText);
+            }
+        }
+    };
+// 5. Prepare your data and send the request
+// Crucial step: Convert the JS object into a JSON string before sending
+    xhr.send();
+    </script>
+  </body>
+</html>
